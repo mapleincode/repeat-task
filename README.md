@@ -7,7 +7,7 @@ a simple tool to run the repeat tasks;
 ## Usage
 
 ```javascript
-const Task = require('repeat-task);
+const Task = require('repeat-task');
 
 const t = new Task();
 
