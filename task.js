@@ -3,13 +3,13 @@
  */
 'use strict';
 
-const EventEmitter = require("events").EventEmitter;
+const EventEmitter = require('events').EventEmitter;
 
 const Tigger = require('./lib/trigger');
 const ts = require('./lib/timestamp');
 
 module.exports = class Task extends EventEmitter {
-    constructor(heartbeatCheckTime, taskExpireTime) {
+    constructor(heartbeatCheckTime, taskExpireTime, defaultTime) {
         super();
 
         if (typeof heartbeatCheckTime === 'object') {
@@ -42,7 +42,7 @@ module.exports = class Task extends EventEmitter {
         // task options
         this.taskOptions = [];
 
-        this.defaultTime = _defaultTime;
+        this.defaultTime = defaultTime;
     }
     _startTasks() {
         let self = this;
@@ -60,7 +60,7 @@ module.exports = class Task extends EventEmitter {
                 }
                 task(() => {
                     if(beginTime && options.timing) {
-                        self.emit('log', `【  TASK  】${taskName} 运行时间 ${ts.getMs() - beginTime} ms`)
+                        self.emit('log', `【  TASK  】${taskName} 运行时间 ${ts.getMs() - beginTime} ms`);
                     }
                 });
                 self.emit('log', `【  TASK  】${taskName} 开始运行 ${ts.get()}`);
@@ -115,4 +115,4 @@ module.exports = class Task extends EventEmitter {
         this.heartbeatTimes.push(null);
         this.taskOptions.push(options || {});
     }
-}
+};
