@@ -60,10 +60,10 @@ module.exports = class Task extends EventEmitter {
                 }
                 task(() => {
                     if(beginTime && options.timing) {
-                        self.emit('log', `【  TASK  】${taskName} 运行时间 ${ts.getMs() - beginTime} ms`);
+                        self.emit('log', `【  TASK  】${taskName} RUN TIME ${ts.getMs() - beginTime} ms`);
                     }
                 });
-                self.emit('log', `【  TASK  】${taskName} 开始运行 ${ts.get()}`);
+                self.emit('log', `【  TASK  】${taskName} START RUN at time ${ts.get()}`);
             });
             t.start();
             self.tiggers[index] = t;
@@ -100,13 +100,13 @@ module.exports = class Task extends EventEmitter {
         }
 
         if(!taskName || !parseInt(taskIntervalTime)) {
-            return this.emit('error', new Error('非法的 taskName 和 intervalTime'));
+            return this.emit('error', new Error('illegal taskName & intervalTime'));
         }
         if(!task || typeof task !== 'function') {
-            return this.emit('error', new Error('非法的 task: 不存在或者 TypeError'));
+            return this.emit('error', new Error('task should be function'));
         }
         if(this.taskNames.indexOf(taskName) > -1) {
-            return this.emit('error', new Error(`taskName ${taskName} 已存在`));
+            return this.emit('error', new Error(`taskName ${taskName} is existed!`));
         }
 
         this.taskNames.push(taskName);
