@@ -8,9 +8,22 @@ const EventEmitter = require("events").EventEmitter;
 const Tigger = require('./lib/trigger');
 const ts = require('./lib/timestamp');
 
-class Task extends EventEmitter {
+module.exports = class Task extends EventEmitter {
     constructor(heartbeatCheckTime, taskExpireTime) {
         super();
+
+        if (typeof heartbeatCheckTime === 'object') {
+            const {
+                hbCheckTime: _heartbeatCheckTime,
+                expireTime: _taskExpireTime,
+                defaultTime: _defaultTime
+            } = heartbeatCheckTime;
+
+            heartbeatCheckTime = _heartbeatCheckTime;
+            taskExpireTime = _taskExpireTime;
+            defaultTime = _defaultTime;
+        }
+
         // heartbeatCheckTime
         this.heartbeatCheckTime = heartbeatCheckTime || 10000;
         // taskExpireTime
@@ -28,6 +41,8 @@ class Task extends EventEmitter {
         this.tiggers = [];
         // task options
         this.taskOptions = [];
+
+        this.defaultTime = _defaultTime;
     }
     _startTasks() {
         let self = this;
@@ -74,6 +89,16 @@ class Task extends EventEmitter {
         
     }
     addTask(taskName, task, taskIntervalTime, options) {
+        if (typeof taskIntervalTime === 'object') {
+            options = taskIntervalTime;
+            taskIntervalTime = null;
+        }
+
+        // 默认间隔时间
+        if (!taskIntervalTime) {
+            taskIntervalTime = this.defaultTime;
+        }
+
         if(!taskName || !parseInt(taskIntervalTime)) {
             return this.emit('error', new Error('非法的 taskName 和 intervalTime'));
         }
@@ -83,6 +108,7 @@ class Task extends EventEmitter {
         if(this.taskNames.indexOf(taskName) > -1) {
             return this.emit('error', new Error(`taskName ${taskName} 已存在`));
         }
+
         this.taskNames.push(taskName);
         this.tasks.push(task);
         this.taskIntervalTimes.push(parseInt(taskIntervalTime));

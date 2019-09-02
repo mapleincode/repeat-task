@@ -1,6 +1,6 @@
 {
   "name": "repeat-task",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "task.js",
   "scripts": {
@@ -11,5 +11,8 @@
     "url": "https://github.com/mapleincode/repeat-task.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^6.3.0"
+  }
 }
