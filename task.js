@@ -63,7 +63,7 @@ module.exports = class Task extends EventEmitter {
                         self.emit('log', `【  TASK  】${taskName} RUN TIME ${ts.getMs() - beginTime} ms`);
                     }
                 });
-                self.emit('log', `【  TASK  】${taskName} START RUN at time ${ts.get()}`);
+                self.emit('log', `【  TASK  】${taskName} START RUN at time ${ts.toLocaleString()}`);
             });
             t.start();
             self.tiggers[index] = t;
